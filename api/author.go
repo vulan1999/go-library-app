@@ -36,3 +36,30 @@ func GetAuthorById(c *gin.Context) {
 		messages.GetMessageJSON(c, http.StatusOK, &target)
 	}
 }
+
+func CreaeAuthor(c *gin.Context) {
+	var body struct {
+		Name string
+	}
+
+	c.Bind(&body)
+
+	newAuthor := models.Author{Name: body.Name}
+
+	create_result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).Create(&newAuthor)
+
+	if create_result.Error != nil {
+		queryerrors.GetQueryErrorMessage(c, create_result.Error)
+	} else {
+		messages.GetMessageJSON(c, http.StatusCreated, &newAuthor)
+	}
+}
+
+func UpdateTodo(c *gin.Context) {
+	update_id := c.Param("id")
+	var update_author models.Author
+	check_result := config.Db.Table(fmt.Sprintf("%s.authos", os.Getenv("PG_SCHEMA"))).First(&update_author, "id = ?", update_id)
+	if check_result.Error != nil {
+		queryerrors.GetQueryErrorMessage(c, check_result.Error)
+	}
+}
