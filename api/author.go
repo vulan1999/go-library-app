@@ -55,7 +55,7 @@ func CreaeAuthor(c *gin.Context) {
 	}
 }
 
-func UpdateTodo(c *gin.Context) {
+func UpdateAuthor(c *gin.Context) {
 	update_id := c.Param("id")
 	var update_author models.Author
 	check_result := config.Db.Table(fmt.Sprintf("%s.authos", os.Getenv("PG_SCHEMA"))).First(&update_author, "id = ?", update_id)

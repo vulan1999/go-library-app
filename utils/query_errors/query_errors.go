@@ -15,6 +15,8 @@ func GetQueryErrorMessage(c *gin.Context, err error) {
 		messages.GetMessageJSON(c, http.StatusNotFound, nil)
 	} else if errors.Is(err, gorm.ErrCheckConstraintViolated) {
 		messages.GetMessageJSON(c, http.StatusBadRequest, nil)
+	} else if errors.Is(err, gorm.ErrModelValueRequired) {
+		messages.GetMessageJSON(c, http.StatusBadRequest, nil)
 	}
 	log.Panic(err)
 }

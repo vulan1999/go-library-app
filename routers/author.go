@@ -10,5 +10,6 @@ func AuthorRouter(r *gin.Engine) {
 	{
 		author_group.GET("/", api.GetAllAuthor)
 		author_group.GET("/:id", api.GetAuthorById)
+		author_group.POST("/", api.CreaeAuthor)
 	}
 }
