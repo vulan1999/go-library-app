@@ -58,8 +58,13 @@ func CreaeAuthor(c *gin.Context) {
 func UpdateAuthor(c *gin.Context) {
 	update_id := c.Param("id")
 	var update_author models.Author
-	check_result := config.Db.Table(fmt.Sprintf("%s.authos", os.Getenv("PG_SCHEMA"))).First(&update_author, "id = ?", update_id)
+	c.ShouldBindJSON(&update_author)
+	var target_author models.Author
+	check_result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).First(&target_author, "id = ?", update_id)
 	if check_result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, check_result.Error)
+	} else {
+		config.Db.Model(&target_author).Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).Update("name", update_author.Name)
+		messages.GetMessageJSON(c, http.StatusOK, &target_author)
 	}
 }
