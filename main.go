@@ -18,5 +18,6 @@ func main() {
 	r := gin.Default()
 	routers.AuthorRouter(r)
 	routers.GenreRouter(r)
+	routers.TagRouter(r)
 	r.Run("localhost:8080")
 }

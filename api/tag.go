@@ -13,24 +13,24 @@ import (
 	queryerrors "github.com/vulan1999/go-library-app/utils/query_errors"
 )
 
-func GetAllGenre(c *gin.Context) {
-	var genres []models.Genre
+func GetAllTags(c *gin.Context) {
+	var tags []models.Tag
 
-	result := config.Db.Table(fmt.Sprintf("%s.genres", os.Getenv("PG_SCHEMA"))).Find(&genres)
+	result := config.Db.Table(fmt.Sprintf("%s.tags", os.Getenv("PG_SCHEMA"))).Find(&tags)
 
 	if result.Error != nil {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "There is something wrong while querying"})
 		log.Panic(result.Error)
 	} else {
-		c.IndentedJSON(http.StatusOK, &genres)
+		c.IndentedJSON(http.StatusOK, &tags)
 	}
 }
 
-func GetGenreById(c *gin.Context) {
+func GetTagById(c *gin.Context) {
 	target_id := c.Param("id")
-	var target models.Genre
+	var target models.Tag
 
-	result := config.Db.Table(fmt.Sprintf("%s.genres", os.Getenv("PG_SCHEMA"))).Take(&target, "id = ?", target_id)
+	result := config.Db.Table(fmt.Sprintf("%s.tags", os.Getenv("PG_SCHEMA"))).First(&target, "id = ?", target_id)
 
 	if result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, result.Error)

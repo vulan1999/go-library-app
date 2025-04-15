@@ -6,7 +6,7 @@ import (
 )
 
 func GenreRouter(r *gin.Engine) {
-	genre_group := r.Group("/genre")
+	genre_group := r.Group("/genres")
 	{
 		genre_group.GET("/", api.GetAllGenre)
 		genre_group.GET("/:id", api.GetGenreById)
