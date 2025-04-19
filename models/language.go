@@ -6,10 +6,10 @@ import (
 )
 
 type Language struct {
-	Id         int    `json:"id"`
-	Language   string `json:"language"`
-	Created_at string `json:"created_at"`
-	Updated_at string `json:"updated_at"`
+	Id          int    `json:"id"`
+	Description string `json:"description"`
+	Created_at  string `json:"created_at"`
+	Updated_at  string `json:"updated_at"`
 }
 
 func (l *Language) TableName() string {
