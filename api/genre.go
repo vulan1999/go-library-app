@@ -1,10 +1,8 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vulan1999/go-library-app/config"
@@ -16,13 +14,13 @@ import (
 func GetAllGenre(c *gin.Context) {
 	var genres []models.Genre
 
-	result := config.Db.Table(fmt.Sprintf("%s.genres", os.Getenv("PG_SCHEMA"))).Find(&genres)
+	result := config.Db.Find(&genres)
 
 	if result.Error != nil {
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "There is something wrong while querying"})
+		queryerrors.GetQueryErrorMessage(c, result.Error)
 		log.Panic(result.Error)
 	} else {
-		c.IndentedJSON(http.StatusOK, &genres)
+		messages.GetMessageJSON(c, http.StatusOK, &genres)
 	}
 }
 
@@ -30,7 +28,7 @@ func GetGenreById(c *gin.Context) {
 	target_id := c.Param("id")
 	var target models.Genre
 
-	result := config.Db.Table(fmt.Sprintf("%s.genres", os.Getenv("PG_SCHEMA"))).Take(&target, "id = ?", target_id)
+	result := config.Db.Take(&target, "id = ?", target_id)
 
 	if result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, result.Error)

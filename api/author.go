@@ -1,10 +1,8 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vulan1999/go-library-app/config"
@@ -16,7 +14,7 @@ import (
 func GetAllAuthor(c *gin.Context) {
 	var authors []models.Author
 
-	result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).Find(&authors)
+	result := config.Db.Find(&authors)
 
 	if result.Error != nil {
 		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
@@ -29,7 +27,7 @@ func GetAllAuthor(c *gin.Context) {
 func GetAuthorById(c *gin.Context) {
 	target_id := c.Param("id")
 	var target models.Author
-	result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).First(&target, "id = ?", target_id)
+	result := config.Db.First(&target, "id = ?", target_id)
 	if result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, result.Error)
 	} else {
@@ -46,7 +44,7 @@ func CreaeAuthor(c *gin.Context) {
 
 	newAuthor := models.Author{Name: body.Name}
 
-	create_result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).Create(&newAuthor)
+	create_result := config.Db.Create(&newAuthor)
 
 	if create_result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, create_result.Error)
@@ -60,11 +58,11 @@ func UpdateAuthor(c *gin.Context) {
 	var update_author models.Author
 	c.ShouldBindJSON(&update_author)
 	var target_author models.Author
-	check_result := config.Db.Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).First(&target_author, "id = ?", update_id)
+	check_result := config.Db.First(&target_author, "id = ?", update_id)
 	if check_result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, check_result.Error)
 	} else {
-		config.Db.Model(&target_author).Table(fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))).Update("name", update_author.Name)
+		config.Db.Model(&target_author).Update("name", update_author.Name)
 		messages.GetMessageJSON(c, http.StatusOK, &target_author)
 	}
 }
