@@ -19,5 +19,6 @@ func main() {
 	routers.AuthorRouter(r)
 	routers.GenreRouter(r)
 	routers.TagRouter(r)
+	routers.BookRouter(r)
 	r.Run("localhost:8080")
 }
