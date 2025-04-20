@@ -6,7 +6,7 @@ import (
 )
 
 type Language struct {
-	Id          int    `json:"id"`
+	Id          uint   `json:"id"`
 	Description string `json:"description"`
 	Created_at  string `json:"created_at"`
 	Updated_at  string `json:"updated_at"`

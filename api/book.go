@@ -9,6 +9,7 @@ import (
 	"github.com/vulan1999/go-library-app/models"
 	"github.com/vulan1999/go-library-app/utils/messages"
 	queryerrors "github.com/vulan1999/go-library-app/utils/query_errors"
+	"gorm.io/gorm"
 )
 
 func GetBookById(c *gin.Context) {
@@ -16,7 +17,17 @@ func GetBookById(c *gin.Context) {
 
 	var target models.Book
 
-	result := config.Db.Preload("Author").Preload("Language").Preload("OriginalBook").First(&target, id)
+	result := config.Db.
+		Preload("Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Name")
+		}).
+		Preload("Language", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Description")
+		}).
+		Preload("OriginalBook", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Title")
+		}).
+		First(&target, id)
 
 	if result.Error != nil {
 		queryerrors.GetQueryErrorMessage(c, result.Error)
