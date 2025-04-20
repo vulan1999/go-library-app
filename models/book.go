@@ -41,13 +41,19 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 	}
 
 	type Temp struct {
-		Id           uint         `json:"id"`
-		Title        string       `json:"title"`
-		Author       BookAuthor   `json:"author"`
-		Language     BookLanguage `json:"language"`
-		OriginalBook OriginalBook `json:"original_book"`
-		CreatedAt    time.Time    `json:"created_at"`
-		UpdatedAt    time.Time    `json:"updated_at"`
+		Id           uint          `json:"id"`
+		Title        string        `json:"title"`
+		Author       BookAuthor    `json:"author"`
+		Language     BookLanguage  `json:"language"`
+		OriginalBook *OriginalBook `json:"original_book"`
+		CreatedAt    time.Time     `json:"created_at"`
+		UpdatedAt    time.Time     `json:"updated_at"`
+	}
+
+	var original_book OriginalBook
+
+	if b.OriginalBook != nil {
+		original_book = OriginalBook{OriginalBookId: b.OriginalBook.Id, OriginalBookTitle: b.OriginalBook.Title}
 	}
 
 	t := Temp{
@@ -55,7 +61,7 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 		Title:        b.Title,
 		Author:       BookAuthor{AuthorId: b.Author.Id, AuthorName: b.Author.Name},
 		Language:     BookLanguage{LanguageId: b.Language.Id, LanguageDescription: b.Language.Description},
-		OriginalBook: OriginalBook{OriginalBookId: b.OriginalBook.Id, OriginalBookTitle: b.OriginalBook.Title},
+		OriginalBook: &original_book,
 		CreatedAt:    b.CreatedAt,
 		UpdatedAt:    b.UpdatedAt,
 	}

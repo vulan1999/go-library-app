@@ -17,6 +17,8 @@ func GetQueryErrorMessage(c *gin.Context, err error) {
 		messages.GetMessageJSON(c, http.StatusBadRequest, nil)
 	} else if errors.Is(err, gorm.ErrModelValueRequired) {
 		messages.GetMessageJSON(c, http.StatusBadRequest, nil)
+	} else {
+		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
 	}
 	log.Panic(err)
 }
