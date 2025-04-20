@@ -36,8 +36,8 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 	}
 
 	type OriginalBook struct {
-		OriginalBookId    uint   `json:"original_book_id"`
-		OriginalBookTitle string `json:"original_book_title"`
+		OriginalBookId    uint   `json:"original_book_id,omitempty"`
+		OriginalBookTitle string `json:"original_book_title,omitempty"`
 	}
 
 	type Temp struct {
