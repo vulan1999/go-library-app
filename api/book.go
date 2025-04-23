@@ -12,12 +12,15 @@ import (
 	"gorm.io/gorm"
 )
 
-// @BasePath /
+// GetBook godoc
 // @Summary Get book by id
-// @Tag book
+// @ID get-book-by-id
+// @Tag Book
 // @Accept json
 // @Param id path int true "Book ID"
 // @Produce json
+// @Success 200 {object} messages.Response{data=models.Book}
+// @Failure 502 {object} messages.Response{data=nil}
 // @Router /books/{id} [get]
 func GetBookById(c *gin.Context) {
 	id := c.Param("id")

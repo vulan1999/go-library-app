@@ -11,6 +11,13 @@ import (
 	queryerrors "github.com/vulan1999/go-library-app/utils/query_errors"
 )
 
+//@Summary Get All Authors
+//@Tag Authors
+//@Accept json
+//@Produce json
+//@Router /authors/ [get]
+//@Succeess 200 {array} models.Author
+
 func GetAllAuthor(c *gin.Context) {
 	var authors []models.Author
 

@@ -6,10 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Response struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
 func GetMessageJSON(c *gin.Context, code int, data interface{}) {
-	c.IndentedJSON(code, gin.H{
-		"code":    code,
-		"message": http.StatusText(code),
-		"data":    data,
+	c.IndentedJSON(code, &Response{
+		Code:    code,
+		Message: http.StatusText(code),
+		Data:    data,
 	})
 }

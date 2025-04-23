@@ -13,9 +13,9 @@ import (
 
 // @title Babel Book Library API
 // @version 1.0
-// @license.namee Apache 2.0
+// @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-
+// @BasePath /
 func init() {
 	config.LoadEnviromentVariables()
 	config.ConnectToDatabase()

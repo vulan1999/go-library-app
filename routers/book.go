@@ -5,6 +5,9 @@ import (
 	"github.com/vulan1999/go-library-app/api"
 )
 
+// BooksRoute godoc
+// @Tag Book
+// @Router /books [get]
 func BookRouter(r *gin.Engine) {
 	book_group := r.Group("/books")
 	{

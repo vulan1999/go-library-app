@@ -1,14 +1,68 @@
+basePath: /
+definitions:
+  messages.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  models.Author:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Book:
+    properties:
+      author:
+        $ref: '#/definitions/models.Author'
+      created_at:
+        type: string
+      id:
+        type: integer
+      language:
+        $ref: '#/definitions/models.Language'
+      original_book:
+        $ref: '#/definitions/models.Book'
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Language:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
 info:
   contact: {}
   license:
+    name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: Babel Book Library API
   version: "1.0"
 paths:
+  /books:
+    get:
+      responses: {}
   /books/{id}:
     get:
       consumes:
       - application/json
+      operationId: get-book-by-id
       parameters:
       - description: Book ID
         in: path
@@ -17,6 +71,24 @@ paths:
         type: integer
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Book'
+              type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
       summary: Get book by id
 swagger: "2.0"
