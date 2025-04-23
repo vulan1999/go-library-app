@@ -16,3 +16,7 @@ type Author struct {
 func (a *Author) TableName() string {
 	return fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))
 }
+
+type AuthorCreateRequest struct {
+	Name string `json:"name" binding:"required"`
+}

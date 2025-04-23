@@ -19,6 +19,13 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.AuthorCreateRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   models.Book:
     properties:
       author:
@@ -55,9 +62,142 @@ info:
   title: Babel Book Library API
   version: "1.0"
 paths:
-  /books:
+  /authors:
+    post:
+      consumes:
+      - application/json
+      operationId: create-author
+      parameters:
+      - description: Author detail to create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthorCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Author'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Create Author
+      tags:
+      - Authors
+  /authors/:
     get:
-      responses: {}
+      consumes:
+      - application/json
+      operationId: get-all-authors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Author'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Get All Authors
+      tags:
+      - Authors
+  /authors/{id}:
+    get:
+      consumes:
+      - application/json
+      operationId: get-author-by-id
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Author'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Get Author By Id
+      tags:
+      - Authors
+    put:
+      consumes:
+      - application/json
+      operationId: update-author-by-id
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Author'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Update Author
+      tags:
+      - Authors
   /books/{id}:
     get:
       consumes:
@@ -91,4 +231,6 @@ paths:
                   type: object
               type: object
       summary: Get book by id
+      tags:
+      - Book
 swagger: "2.0"

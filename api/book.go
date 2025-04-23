@@ -15,7 +15,7 @@ import (
 // GetBook godoc
 // @Summary Get book by id
 // @ID get-book-by-id
-// @Tag Book
+// @Tags Book
 // @Accept json
 // @Param id path int true "Book ID"
 // @Produce json
