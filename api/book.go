@@ -46,3 +46,36 @@ func GetBookById(c *gin.Context) {
 		messages.GetMessageJSON(c, http.StatusOK, &target)
 	}
 }
+
+// @Summary Create Book
+// @Tags Book
+// @ID create-book
+// @Accept json
+// @Produce json
+// @Param body body models.BookCreateRequest true "Book detail to create"
+// @Success 201 {object} messages.Response{data=models.Book}
+// @Failure 500 {object} messages.Response{data=nil}
+// @Router /books [post]
+func CreateBook(c *gin.Context) {
+	var body models.BookCreateRequest
+
+	if err := c.BindJSON(&body); err != nil {
+		messages.GetMessageJSON(c, http.StatusBadRequest, nil)
+		return
+	}
+
+	newBook := models.Book{
+		Title:          body.Title,
+		AuthorId:       body.AuthorId,
+		LanguageId:     body.LanguageId,
+		OriginalBookId: body.OriginalBookId,
+	}
+
+	create_result := config.Db.Create(&newBook)
+
+	if create_result.Error != nil {
+		queryerrors.GetQueryErrorMessage(c, create_result.Error)
+		return
+	}
+	messages.GetMessageJSON(c, http.StatusCreated, &newBook)
+}

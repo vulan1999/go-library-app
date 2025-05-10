@@ -20,6 +20,13 @@ type Book struct {
 	UpdatedAt      time.Time `json:"updated_at"`
 }
 
+type BookCreateRequest struct {
+	Title          string `json:"title"`
+	AuthorId       uint   `json:"author_id"`
+	LanguageId     uint   `json:"language_id"`
+	OriginalBookId *uint  `json:"original_book_id"`
+}
+
 func (b *Book) TableName() string {
 	return fmt.Sprintf("%s.books", os.Getenv("PG_SCHEMA"))
 }

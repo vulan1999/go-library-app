@@ -43,6 +43,17 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.BookCreateRequest:
+    properties:
+      author_id:
+        type: integer
+      language_id:
+        type: integer
+      original_book_id:
+        type: integer
+      title:
+        type: string
+    type: object
   models.Language:
     properties:
       created_at:
@@ -198,6 +209,42 @@ paths:
       summary: Update Author
       tags:
       - Authors
+  /books:
+    post:
+      consumes:
+      - application/json
+      operationId: create-book
+      parameters:
+      - description: Book detail to create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Book'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Create Book
+      tags:
+      - Book
   /books/{id}:
     get:
       consumes:
