@@ -338,6 +338,20 @@ const docTemplate = `{
                 ],
                 "summary": "Get all books",
                 "operationId": "get-all-books",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "List page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "List limit",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

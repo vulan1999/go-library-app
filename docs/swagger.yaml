@@ -250,6 +250,15 @@ paths:
       consumes:
       - application/json
       operationId: get-all-books
+      parameters:
+      - description: List page
+        in: query
+        name: page
+        type: integer
+      - description: List limit
+        in: query
+        name: limit
+        type: integer
       produces:
       - application/json
       responses:

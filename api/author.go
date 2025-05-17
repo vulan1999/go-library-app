@@ -11,14 +11,14 @@ import (
 	queryerrors "github.com/vulan1999/go-library-app/utils/query_errors"
 )
 
-// @Summary Get All Authors
-// @Tags Authors
-// @ID get-all-authors
-// @Accept json
-// @Produce json
-// @Success 200 {object} messages.Response{data=[]models.Author}
-// @Failure 500 {object} messages.Response{data=nil}
-// @Router /authors/ [get]
+//	@Summary	Get All Authors
+//	@Tags		Authors
+//	@ID			get-all-authors
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{object}	messages.Response{data=[]models.Author}
+//	@Failure	500	{object}	messages.Response{data=nil}
+//	@Router		/authors/ [get]
 func GetAllAuthor(c *gin.Context) {
 	var authors []models.Author
 
@@ -32,15 +32,15 @@ func GetAllAuthor(c *gin.Context) {
 	}
 }
 
-// @Summary Get Author By Id
-// @Tags Authors
-// @ID get-author-by-id
-// @Accept json
-// @Produce json
-// @Param id path int true "Author ID"
-// @Success 200 {object} messages.Response{data=models.Author}
-// @Failure 500 {object} messages.Response{data=nil}
-// @Router /authors/{id} [get]
+//	@Summary	Get Author By Id
+//	@Tags		Authors
+//	@ID			get-author-by-id
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		int	true	"Author ID"
+//	@Success	200	{object}	messages.Response{data=models.Author}
+//	@Failure	500	{object}	messages.Response{data=nil}
+//	@Router		/authors/{id} [get]
 func GetAuthorById(c *gin.Context) {
 	target_id := c.Param("id")
 	var target models.Author
@@ -52,15 +52,15 @@ func GetAuthorById(c *gin.Context) {
 	}
 }
 
-// @Summary Create Author
-// @Tags Authors
-// @ID create-author
-// @Accept json
-// @Produce json
-// @Param body body models.AuthorCreateRequest true "Author detail to create"
-// @Success 201 {object} messages.Response{data=models.Author}
-// @Failure 500 {object} messages.Response{data=nil}
-// @Router /authors [post]
+//	@Summary	Create Author
+//	@Tags		Authors
+//	@ID			create-author
+//	@Accept		json
+//	@Produce	json
+//	@Param		body	body		models.AuthorCreateRequest	true	"Author detail to create"
+//	@Success	201		{object}	messages.Response{data=models.Author}
+//	@Failure	500		{object}	messages.Response{data=nil}
+//	@Router		/authors [post]
 func CreaeAuthor(c *gin.Context) {
 	var body models.AuthorCreateRequest
 
@@ -80,15 +80,15 @@ func CreaeAuthor(c *gin.Context) {
 	messages.GetMessageJSON(c, http.StatusCreated, &newAuthor)
 }
 
-// @Summary Update Author
-// @Tags Authors
-// @ID update-author-by-id
-// @Accept json
-// @Produce json
-// @Param id path int true "Author ID"
-// @Success 200 {object} messages.Response{data=models.Author}
-// @Failure 500 {object} messages.Response{data=nil}
-// @Router /authors/{id} [put]
+//	@Summary	Update Author
+//	@Tags		Authors
+//	@ID			update-author-by-id
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		int	true	"Author ID"
+//	@Success	200	{object}	messages.Response{data=models.Author}
+//	@Failure	500	{object}	messages.Response{data=nil}
+//	@Router		/authors/{id} [put]
 func UpdateAuthor(c *gin.Context) {
 	update_id := c.Param("id")
 	var update_author models.Author

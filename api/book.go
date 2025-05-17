@@ -3,6 +3,7 @@ package api
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vulan1999/go-library-app/config"
@@ -13,18 +14,35 @@ import (
 )
 
 // GetBook godoc
-// @Summary Get all books
-// @ID get-all-books
-// @Tags Book
-// @Accept json
-// @Produce json
-// @Success 200 {object} messages.Response{data=[]models.Book}
-// @Failure 502 {object} messages.Response{data=nil}
-// @Router /books/ [get]
+//
+//	@Summary	Get all books
+//	@ID			get-all-books
+//	@Tags		Book
+//	@Accept		json
+//	@Produce	json
+//	@Param		page	query		int	false	"List page"
+//	@Param		limit	query		int	false	"List limit"
+//	@Success	200		{object}	messages.Response{data=[]models.Book}
+//	@Failure	502		{object}	messages.Response{data=nil}
+//	@Router		/books/ [get]
 func GetAllBooks(c *gin.Context) {
 	var books []models.Book
+	page, page_err := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, limit_err := strconv.Atoi(c.DefaultQuery("limit", "10"))
 
-	result := config.Db.Find(&books)
+	if page_err != nil || limit_err != nil {
+		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
+		log.Panic(page_err)
+		log.Panic(limit_err)
+		return
+	}
+
+	offset := 0
+	if page > 1 {
+		offset = limit * (page - 1)
+	}
+
+	result := config.Db.Limit(limit).Offset(offset).Find(&books)
 
 	if result.Error != nil {
 		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
@@ -35,15 +53,16 @@ func GetAllBooks(c *gin.Context) {
 }
 
 // GetBook godoc
-// @Summary Get book by id
-// @ID get-book-by-id
-// @Tags Book
-// @Accept json
-// @Param id path int true "Book ID"
-// @Produce json
-// @Success 200 {object} messages.Response{data=models.Book}
-// @Failure 502 {object} messages.Response{data=nil}
-// @Router /books/{id} [get]
+//
+//	@Summary	Get book by id
+//	@ID			get-book-by-id
+//	@Tags		Book
+//	@Accept		json
+//	@Param		id	path	int	true	"Book ID"
+//	@Produce	json
+//	@Success	200	{object}	messages.Response{data=models.Book}
+//	@Failure	502	{object}	messages.Response{data=nil}
+//	@Router		/books/{id} [get]
 func GetBookById(c *gin.Context) {
 	id := c.Param("id")
 
@@ -69,15 +88,15 @@ func GetBookById(c *gin.Context) {
 	}
 }
 
-// @Summary Create Book
-// @Tags Book
-// @ID create-book
-// @Accept json
-// @Produce json
-// @Param body body models.BookCreateRequest true "Book detail to create"
-// @Success 201 {object} messages.Response{data=models.Book}
-// @Failure 500 {object} messages.Response{data=nil}
-// @Router /books [post]
+// @Summary	Create Book
+// @Tags		Book
+// @ID			create-book
+// @Accept		json
+// @Produce	json
+// @Param		body	body		models.BookCreateRequest	true	"Book detail to create"
+// @Success	201		{object}	messages.Response{data=models.Book}
+// @Failure	500		{object}	messages.Response{data=nil}
+// @Router		/books [post]
 func CreateBook(c *gin.Context) {
 	var body models.BookCreateRequest
 
