@@ -13,6 +13,28 @@ import (
 )
 
 // GetBook godoc
+// @Summary Get all books
+// @ID get-all-books
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Success 200 {object} messages.Response{data=[]models.Book}
+// @Failure 502 {object} messages.Response{data=nil}
+// @Router /books/ [get]
+func GetAllBooks(c *gin.Context) {
+	var books []models.Book
+
+	result := config.Db.Find(&books)
+
+	if result.Error != nil {
+		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
+		log.Panic(result.Error)
+	} else {
+		messages.GetMessageJSON(c, http.StatusOK, &books)
+	}
+}
+
+// GetBook godoc
 // @Summary Get book by id
 // @ID get-book-by-id
 // @Tags Book

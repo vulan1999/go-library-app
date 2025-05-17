@@ -10,5 +10,6 @@ func BookRouter(r *gin.Engine) {
 	{
 		book_group.GET("/:id", api.GetBookById)
 		book_group.POST("/", api.CreateBook)
+		book_group.GET("/", api.GetAllBooks)
 	}
 }

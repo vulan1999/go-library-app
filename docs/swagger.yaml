@@ -245,6 +245,37 @@ paths:
       summary: Create Book
       tags:
       - Book
+  /books/:
+    get:
+      consumes:
+      - application/json
+      operationId: get-all-books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Book'
+                  type: array
+              type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Get all books
+      tags:
+      - Book
   /books/{id}:
     get:
       consumes:
