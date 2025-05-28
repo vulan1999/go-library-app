@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-	"os"
 	"time"
 )
 
@@ -14,7 +12,7 @@ type Author struct {
 }
 
 func (a *Author) TableName() string {
-	return fmt.Sprintf("%s.authors", os.Getenv("PG_SCHEMA"))
+	return "authors"
 }
 
 type AuthorCreateRequest struct {

@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-	"os"
 	"time"
 )
 
@@ -14,5 +12,13 @@ type Tag struct {
 }
 
 func (t *Tag) TableName() string {
-	return fmt.Sprintf("%s.tags", os.Getenv("PG_SCHEMA"))
+	return "tags"
+}
+
+type BookTag struct {
+	Id         uint
+	BookId     uint
+	TagId      uint
+	Created_at time.Time
+	Updated_at time.Time
 }

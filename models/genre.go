@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-	"os"
 	"time"
 )
 
@@ -14,5 +12,5 @@ type Genre struct {
 }
 
 func (g *Genre) TableName() string {
-	return fmt.Sprintf("%s.genres", os.Getenv("PG_SCHEMA"))
+	return "genres"
 }

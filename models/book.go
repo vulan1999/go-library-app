@@ -2,8 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
 	"time"
 )
 
@@ -28,7 +26,7 @@ type BookCreateRequest struct {
 }
 
 func (b *Book) TableName() string {
-	return fmt.Sprintf("%s.books", os.Getenv("PG_SCHEMA"))
+	return "books"
 }
 
 func (b *Book) MarshalJSON() ([]byte, error) {
@@ -45,6 +43,11 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 	type OriginalBook struct {
 		OriginalBookId    uint   `json:"original_book_id,omitempty"`
 		OriginalBookTitle string `json:"original_book_title,omitempty"`
+	}
+
+	type BookTag struct {
+		TagId          uint   `json:"tag_id"`
+		TagDescription string `json:"tag_description"`
 	}
 
 	type Temp struct {

@@ -1,10 +1,5 @@
 package models
 
-import (
-	"fmt"
-	"os"
-)
-
 type Language struct {
 	Id          uint   `json:"id"`
 	Description string `json:"description"`
@@ -13,5 +8,5 @@ type Language struct {
 }
 
 func (l *Language) TableName() string {
-	return fmt.Sprintf("%s.languages", os.Getenv("PG_SCHEMA"))
+	return "languages"
 }
