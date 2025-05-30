@@ -14,6 +14,7 @@ type Book struct {
 	Language       Language  `json:"language" gorm:"foreignKey:LanguageId;reference:Id"`
 	OriginalBookId *uint     `json:"-"`
 	OriginalBook   *Book     `json:"original_book" gorm:"foreignKey:OriginalBookId;reference:Id"`
+	Tags           []*Tag    `json:"tags" gorm:"many2many:book_tags"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }
@@ -56,6 +57,7 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 		Author       BookAuthor    `json:"author"`
 		Language     BookLanguage  `json:"language"`
 		OriginalBook *OriginalBook `json:"original_book"`
+		Tags         []*BookTag    `json:"tags"`
 		CreatedAt    time.Time     `json:"created_at"`
 		UpdatedAt    time.Time     `json:"updated_at"`
 	}
@@ -66,12 +68,18 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 		original_book = OriginalBook{OriginalBookId: b.OriginalBook.Id, OriginalBookTitle: b.OriginalBook.Title}
 	}
 
+	var tag_list []*BookTag
+	for _, value := range b.Tags {
+		tag_list = append(tag_list, &BookTag{TagId: uint(value.Id), TagDescription: value.Description})
+	}
+
 	t := Temp{
 		Id:           b.Id,
 		Title:        b.Title,
 		Author:       BookAuthor{AuthorId: b.Author.Id, AuthorName: b.Author.Name},
 		Language:     BookLanguage{LanguageId: b.Language.Id, LanguageDescription: b.Language.Description},
 		OriginalBook: &original_book,
+		Tags:         tag_list,
 		CreatedAt:    b.CreatedAt,
 		UpdatedAt:    b.UpdatedAt,
 	}

@@ -78,6 +78,9 @@ func GetBookById(c *gin.Context) {
 		Preload("OriginalBook", func(db *gorm.DB) *gorm.DB {
 			return db.Select("Id", "Title")
 		}).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Description")
+		}).
 		First(&target, id)
 
 	if result.Error != nil {

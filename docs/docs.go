@@ -517,6 +517,12 @@ const docTemplate = `{
                 "original_book": {
                     "$ref": "#/definitions/models.Book"
                 },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Tag"
+                    }
+                },
                 "title": {
                     "type": "string"
                 },
@@ -545,6 +551,29 @@ const docTemplate = `{
         "models.Language": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Tag": {
+            "type": "object",
+            "properties": {
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Book"
+                    }
+                },
                 "created_at": {
                     "type": "string"
                 },

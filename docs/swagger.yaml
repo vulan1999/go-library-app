@@ -38,6 +38,10 @@ definitions:
         $ref: '#/definitions/models.Language'
       original_book:
         $ref: '#/definitions/models.Book'
+      tags:
+        items:
+          $ref: '#/definitions/models.Tag'
+        type: array
       title:
         type: string
       updated_at:
@@ -56,6 +60,21 @@ definitions:
     type: object
   models.Language:
     properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Tag:
+    properties:
+      books:
+        items:
+          $ref: '#/definitions/models.Book'
+        type: array
       created_at:
         type: string
       description:
