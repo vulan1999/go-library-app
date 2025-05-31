@@ -17,9 +17,6 @@ func (t *Tag) TableName() string {
 }
 
 type BookTag struct {
-	Id         uint
-	BookId     uint
-	TagId      uint
-	Created_at time.Time
-	Updated_at time.Time
+	TagId          uint   `json:"tag_id"`
+	TagDescription string `json:"tag_description"`
 }

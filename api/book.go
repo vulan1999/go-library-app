@@ -22,7 +22,7 @@ import (
 //	@Produce	json
 //	@Param		page	query		int	false	"List page"
 //	@Param		limit	query		int	false	"List limit"
-//	@Success	200		{object}	messages.Response{data=[]models.Book}
+//	@Success	200		{object}	messages.Response{data=[]models.BookResponse}
 //	@Failure	502		{object}	messages.Response{data=nil}
 //	@Router		/books/ [get]
 func GetAllBooks(c *gin.Context) {
@@ -42,7 +42,13 @@ func GetAllBooks(c *gin.Context) {
 		offset = limit * (page - 1)
 	}
 
-	result := config.Db.Limit(limit).Offset(offset).Find(&books)
+	result := config.Db.
+		Limit(limit).
+		Offset(offset).
+		Preload("OriginalBook", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Title")
+		}).
+		Find(&books)
 
 	if result.Error != nil {
 		messages.GetMessageJSON(c, http.StatusInternalServerError, nil)
@@ -60,7 +66,7 @@ func GetAllBooks(c *gin.Context) {
 //	@Accept		json
 //	@Param		id	path	int	true	"Book ID"
 //	@Produce	json
-//	@Success	200	{object}	messages.Response{data=models.Book}
+//	@Success	200	{object}	messages.Response{data=models.BookResponse}
 //	@Failure	502	{object}	messages.Response{data=nil}
 //	@Router		/books/{id} [get]
 func GetBookById(c *gin.Context) {
@@ -97,7 +103,7 @@ func GetBookById(c *gin.Context) {
 // @Accept		json
 // @Produce	json
 // @Param		body	body		models.BookCreateRequest	true	"Book detail to create"
-// @Success	201		{object}	messages.Response{data=models.Book}
+// @Success	201		{object}	messages.Response{data=models.BookResponse}
 // @Failure	500		{object}	messages.Response{data=nil}
 // @Router		/books [post]
 func CreateBook(c *gin.Context) {

@@ -30,38 +30,23 @@ func (b *Book) TableName() string {
 	return "books"
 }
 
+type OriginalBook struct {
+	OriginalBookId    uint   `json:"original_book_id,omitempty"`
+	OriginalBookTitle string `json:"original_book_title,omitempty"`
+}
+
+type BookResponse struct {
+	Id           uint             `json:"id"`
+	Title        string           `json:"title"`
+	Author       AuthorResponse   `json:"author"`
+	Language     LanguageResponse `json:"language"`
+	OriginalBook *OriginalBook    `json:"original_book"`
+	Tags         []*BookTag       `json:"tags"`
+	CreatedAt    time.Time        `json:"created_at"`
+	UpdatedAt    time.Time        `json:"updated_at"`
+}
+
 func (b *Book) MarshalJSON() ([]byte, error) {
-	type BookAuthor struct {
-		AuthorId   uint   `json:"author_id"`
-		AuthorName string `json:"author_name"`
-	}
-
-	type BookLanguage struct {
-		LanguageId          uint   `json:"language_id"`
-		LanguageDescription string `json:"language_description"`
-	}
-
-	type OriginalBook struct {
-		OriginalBookId    uint   `json:"original_book_id,omitempty"`
-		OriginalBookTitle string `json:"original_book_title,omitempty"`
-	}
-
-	type BookTag struct {
-		TagId          uint   `json:"tag_id"`
-		TagDescription string `json:"tag_description"`
-	}
-
-	type Temp struct {
-		Id           uint          `json:"id"`
-		Title        string        `json:"title"`
-		Author       BookAuthor    `json:"author"`
-		Language     BookLanguage  `json:"language"`
-		OriginalBook *OriginalBook `json:"original_book"`
-		Tags         []*BookTag    `json:"tags"`
-		CreatedAt    time.Time     `json:"created_at"`
-		UpdatedAt    time.Time     `json:"updated_at"`
-	}
-
 	var original_book OriginalBook
 
 	if b.OriginalBook != nil {
@@ -73,11 +58,11 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 		tag_list = append(tag_list, &BookTag{TagId: uint(value.Id), TagDescription: value.Description})
 	}
 
-	t := Temp{
+	t := BookResponse{
 		Id:           b.Id,
 		Title:        b.Title,
-		Author:       BookAuthor{AuthorId: b.Author.Id, AuthorName: b.Author.Name},
-		Language:     BookLanguage{LanguageId: b.Language.Id, LanguageDescription: b.Language.Description},
+		Author:       AuthorResponse{AuthorId: b.Author.Id, AuthorName: b.Author.Name},
+		Language:     LanguageResponse{LanguageId: b.Language.Id, LanguageDescription: b.Language.Description},
 		OriginalBook: &original_book,
 		Tags:         tag_list,
 		CreatedAt:    b.CreatedAt,

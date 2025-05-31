@@ -297,7 +297,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.Book"
+                                            "$ref": "#/definitions/models.BookResponse"
                                         }
                                     }
                                 }
@@ -366,7 +366,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/models.Book"
+                                                "$ref": "#/definitions/models.BookResponse"
                                             }
                                         }
                                     }
@@ -429,7 +429,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.Book"
+                                            "$ref": "#/definitions/models.BookResponse"
                                         }
                                     }
                                 }
@@ -499,34 +499,13 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Book": {
+        "models.AuthorResponse": {
             "type": "object",
             "properties": {
-                "author": {
-                    "$ref": "#/definitions/models.Author"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
+                "author_id": {
                     "type": "integer"
                 },
-                "language": {
-                    "$ref": "#/definitions/models.Language"
-                },
-                "original_book": {
-                    "$ref": "#/definitions/models.Book"
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Tag"
-                    }
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
+                "author_name": {
                     "type": "string"
                 }
             }
@@ -548,42 +527,67 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Language": {
+        "models.BookResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
+                "author": {
+                    "$ref": "#/definitions/models.AuthorResponse"
                 },
-                "description": {
+                "created_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
+                },
+                "language": {
+                    "$ref": "#/definitions/models.LanguageResponse"
+                },
+                "original_book": {
+                    "$ref": "#/definitions/models.OriginalBook"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.BookTag"
+                    }
+                },
+                "title": {
+                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "models.Tag": {
+        "models.BookTag": {
             "type": "object",
             "properties": {
-                "books": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Book"
-                    }
-                },
-                "created_at": {
+                "tag_description": {
                     "type": "string"
                 },
-                "description": {
+                "tag_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.LanguageResponse": {
+            "type": "object",
+            "properties": {
+                "language_description": {
                     "type": "string"
                 },
-                "id": {
+                "language_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.OriginalBook": {
+            "type": "object",
+            "properties": {
+                "original_book_id": {
                     "type": "integer"
                 },
-                "updated_at": {
+                "original_book_title": {
                     "type": "string"
                 }
             }

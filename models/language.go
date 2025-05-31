@@ -10,3 +10,8 @@ type Language struct {
 func (l *Language) TableName() string {
 	return "languages"
 }
+
+type LanguageResponse struct {
+	LanguageId          uint   `json:"language_id"`
+	LanguageDescription string `json:"language_description"`
+}
