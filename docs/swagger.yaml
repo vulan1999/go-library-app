@@ -94,6 +94,117 @@ info:
   title: Babel Book Library API
   version: "1.0"
 paths:
+  /api/books:
+    post:
+      consumes:
+      - application/json
+      operationId: create-book
+      parameters:
+      - description: Book detail to create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.BookCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.BookResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Create Book
+      tags:
+      - Book
+  /api/books/:
+    get:
+      consumes:
+      - application/json
+      operationId: get-all-books
+      parameters:
+      - description: List page
+        in: query
+        name: page
+        type: integer
+      - description: List limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.BookResponse'
+                  type: array
+              type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Get all books
+      tags:
+      - Book
+  /api/books/{id}:
+    get:
+      consumes:
+      - application/json
+      operationId: get-book-by-id
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.BookResponse'
+              type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            allOf:
+            - $ref: '#/definitions/messages.Response'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: Get book by id
+      tags:
+      - Book
   /authors:
     post:
       consumes:
@@ -230,115 +341,4 @@ paths:
       summary: Update Author
       tags:
       - Authors
-  /books:
-    post:
-      consumes:
-      - application/json
-      operationId: create-book
-      parameters:
-      - description: Book detail to create
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/models.BookCreateRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.BookResponse'
-              type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  type: object
-              type: object
-      summary: Create Book
-      tags:
-      - Book
-  /books/:
-    get:
-      consumes:
-      - application/json
-      operationId: get-all-books
-      parameters:
-      - description: List page
-        in: query
-        name: page
-        type: integer
-      - description: List limit
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/models.BookResponse'
-                  type: array
-              type: object
-        "502":
-          description: Bad Gateway
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  type: object
-              type: object
-      summary: Get all books
-      tags:
-      - Book
-  /books/{id}:
-    get:
-      consumes:
-      - application/json
-      operationId: get-book-by-id
-      parameters:
-      - description: Book ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.BookResponse'
-              type: object
-        "502":
-          description: Bad Gateway
-          schema:
-            allOf:
-            - $ref: '#/definitions/messages.Response'
-            - properties:
-                data:
-                  type: object
-              type: object
-      summary: Get book by id
-      tags:
-      - Book
 swagger: "2.0"

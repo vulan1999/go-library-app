@@ -24,7 +24,7 @@ import (
 //	@Param		limit	query		int	false	"List limit"
 //	@Success	200		{object}	messages.Response{data=[]models.BookResponse}
 //	@Failure	502		{object}	messages.Response{data=nil}
-//	@Router		/books/ [get]
+//	@Router		/api/books/ [get]
 func GetAllBooks(c *gin.Context) {
 	var books []models.Book
 	page, page_err := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -45,8 +45,17 @@ func GetAllBooks(c *gin.Context) {
 	result := config.Db.
 		Limit(limit).
 		Offset(offset).
+		Preload("Author", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Name")
+		}).
+		Preload("Language", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Description")
+		}).
 		Preload("OriginalBook", func(db *gorm.DB) *gorm.DB {
 			return db.Select("Id", "Title")
+		}).
+		Preload("Tags", func(db *gorm.DB) *gorm.DB {
+			return db.Select("Id", "Description")
 		}).
 		Find(&books)
 
@@ -68,7 +77,7 @@ func GetAllBooks(c *gin.Context) {
 //	@Produce	json
 //	@Success	200	{object}	messages.Response{data=models.BookResponse}
 //	@Failure	502	{object}	messages.Response{data=nil}
-//	@Router		/books/{id} [get]
+//	@Router		/api/books/{id} [get]
 func GetBookById(c *gin.Context) {
 	id := c.Param("id")
 
@@ -105,7 +114,7 @@ func GetBookById(c *gin.Context) {
 // @Param		body	body		models.BookCreateRequest	true	"Book detail to create"
 // @Success	201		{object}	messages.Response{data=models.BookResponse}
 // @Failure	500		{object}	messages.Response{data=nil}
-// @Router		/books [post]
+// @Router		/api/books [post]
 func CreateBook(c *gin.Context) {
 	var body models.BookCreateRequest
 
